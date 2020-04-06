@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  background: #fff;
+
+  .logo {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
