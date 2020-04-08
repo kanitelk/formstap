@@ -5,9 +5,23 @@
   background: #fff;
 
   .logo {
+    display: flex;
+    flex-flow: row nowrap;
     font-weight: 700;
-    font-size: 1rem;
     cursor: pointer;
+
+    h1 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: #1890ff;
+      margin-bottom: 5px;
+      line-height: 60px;
+      margin-left: 2px;
+    }
   }
 
   .actions {

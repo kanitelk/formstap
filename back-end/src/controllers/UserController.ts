@@ -3,7 +3,6 @@ import express from "express";
 
 import { decodeToken, getToken, isAuthMiddleware } from "../actions/Auth";
 import { createUser, editUser, loginUser } from "../actions/User";
-import { HttpException } from "../utils/errorHandler";
 
 const router = express.Router();
 
@@ -23,7 +22,7 @@ router.post("/", async (req, res) => {
   try {
     res.send(await createUser(login, password, email));
   } catch (error) {
-      throw new HttpException(400, error);
+    res.status(400).send(error);
   }
 });
 
@@ -33,7 +32,7 @@ router.post("/login", async (req, res) => {
   try {
     res.send(await loginUser(login, password));
   } catch (error) {
-      throw new HttpException(400, error);
+    res.status(400).send(error);
   }
 });
 
@@ -47,7 +46,7 @@ router.post(
       const data = decodeToken(getToken(req));
       res.send(await editUser(data._id, email, password));
     } catch (error) {
-      throw new HttpException(400, error);
+      res.status(400).send(error);
     }
   }
 );
@@ -60,7 +59,7 @@ router.get(
     try {
       res.send(getToken(req));
     } catch (error) {
-      throw new HttpException(400, error)
+      res.status(400).send(error);
     }
   }
 );

@@ -1,0 +1,17 @@
+.forms-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  .form-card {
+    width: 200px;
+    margin: 10px;
+
+    img {
+      user-select: none;
+      -webkit-user-drag: none;
+      max-height: 100px;
+      object-fit: cover;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.panel-view {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+
+  .create-form__btn {
+    margin-top: 15px;
+  }
+}

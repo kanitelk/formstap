@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { AppStoreContext } from "../../stores/appStore";
 import { login } from "../../services/authAPI";
 import history from "../../stores/history";
+import { httpErrorHandler } from "../../services/utils";
 
 const LoginForm: React.FC = observer(() => {
   const store = useContext(AppStoreContext)
@@ -17,7 +18,7 @@ const LoginForm: React.FC = observer(() => {
       store.setAuth(r.token)
       history.push('/')
     } catch (error) {
-      message.error(error)
+      httpErrorHandler(error)
     }
   };
   return (

@@ -1,0 +1,9 @@
+.edit-view {
+  display: flex;
+  flex-flow: row wrap;
+  margin: -20px;
+
+  div {
+    flex: 50%;
+  }
+}

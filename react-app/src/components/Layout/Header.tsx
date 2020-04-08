@@ -19,7 +19,8 @@ const Header: React.FC = observer(() => {
         }}
         className="logo"
       >
-        TapForms
+        <h1>TapForms</h1>
+        <p>Alpha</p>
       </div>
       <div className="actions">
         {!store.isAuth && (

@@ -2,10 +2,9 @@ import bodyParser from "body-parser";
 import express from "express";
 
 import { decodeToken, getToken, isAuthMiddleware } from "../actions/Auth";
+import { Field } from "../models/FieldSchema";
 import { Form } from "../models/FormSchema";
 import { HttpException } from "../utils/errorHandler";
-import { Field } from "../models/FieldSchema";
-import { Mongoose } from "mongoose";
 
 const router = express.Router();
 
@@ -19,6 +18,20 @@ router.use(
   })
 );
 
+// Get user forms
+router.get(
+  "/",
+  async (req, res) => {
+    try {
+      const user = decodeToken(getToken(req));
+      let forms = await Form.find({ user_id: user._id });
+      res.send(forms);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
+
 // Get form by id
 router.get("/:id", async (req, res) => {
   try {
@@ -27,14 +40,13 @@ router.get("/:id", async (req, res) => {
     if (!form) new HttpException(404, "Form not found");
     res.send(form);
   } catch (error) {
-    throw error;
+    res.status(400).send(error);
   }
 });
 
 // Create new form
 router.post(
   "/",
-  (req, res, next) => isAuthMiddleware(req, res, next),
   async (req, res) => {
     try {
       const user = decodeToken(getToken(req));
@@ -42,7 +54,7 @@ router.post(
       await newForm.save();
       res.send(newForm);
     } catch (error) {
-      throw new HttpException(400, error);
+      res.status(400).send(error);
     }
   }
 );
@@ -57,7 +69,7 @@ router.post(
       const newField = new Field({ user_id: user._id, type });
       res.send(newField);
     } catch (error) {
-      throw new HttpException(400, error);
+      res.status(400).send(error);
     }
   }
 );
@@ -76,7 +88,7 @@ router.put(
       await fld.save();
       res.send(fld);
     } catch (error) {
-      throw new HttpException(400, error);
+      res.status(400).send(error);
     }
   }
 );
@@ -91,10 +103,10 @@ router.delete(
       let fld = await Field.findById(field_id);
       if (!fld.user_id.equals(user._id))
         throw new HttpException(400, "You are not owner of field");
-      await Field.deleteOne({ _id: field_id});
-      res.send({status: 'ok'});
+      await Field.deleteOne({ _id: field_id });
+      res.send({ status: "ok" });
     } catch (error) {
-      throw new HttpException(400, error);
+      res.status(400).send(error);
     }
   }
 );

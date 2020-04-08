@@ -1,6 +1,7 @@
 import { prepareLink, TX_TYPE } from "minter-js-sdk";
 
 import i18n from "../i18n";
+import { message } from "antd";
 
 export const shortAddress = (address: string): string => {
   return (
@@ -11,6 +12,20 @@ export const shortAddress = (address: string): string => {
 export const getLocale = () => {
   return i18n.language.substring(0, 2);
 };
+
+export const httpErrorHandler = (error: any) => {
+  if (error.response) {
+    if (error.response.data.message) {
+      message.error(error.response.data.message);
+    } else {
+      console.log(error);
+      message.error(`Oops, something went wrong..`);
+    }
+  } else {
+    console.log(error);
+    message.error(`Oops, something went wrong..`);
+  }
+}
 
 export const getDeepLink = (
   address: string,

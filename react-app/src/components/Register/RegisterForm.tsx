@@ -7,6 +7,7 @@ import { register } from "../../services/authAPI";
 import { observer } from "mobx-react-lite";
 import { AppStoreContext } from "../../stores/appStore";
 import history from "../../stores/history";
+import { httpErrorHandler } from "../../services/utils";
 
 const RegisterForm: React.FC = observer(() => {
   const store = useContext(AppStoreContext);
@@ -17,7 +18,7 @@ const RegisterForm: React.FC = observer(() => {
       store.setAuth(r.token)
       history.push('/');
     } catch (error) {
-      message.error(error)
+      httpErrorHandler(error);
     }
   };
   return (
