@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Layout, Menu, Icon } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Layout, Menu } from "antd";
+import { LeftOutlined, RightOutlined, UserOutlined } from "@ant-design/icons";
 import "./Sider.scss";
 
 const Sider: React.FC = () => {
@@ -19,15 +19,15 @@ const Sider: React.FC = () => {
       <div className="main">
         <Menu theme="light" mode="inline" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1">
-            <Icon type="user" />
+            <UserOutlined />
             <span>nav 1</span>
           </Menu.Item>
           <Menu.Item key="2">
-            <Icon type="video-camera" />
+            <UserOutlined />
             <span>nav 2</span>
           </Menu.Item>
           <Menu.Item key="3">
-            <Icon type="upload" />
+            <UserOutlined />
             <span>nav 3</span>
           </Menu.Item>
         </Menu>

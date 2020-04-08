@@ -1,27 +1,27 @@
+import "./LoginForm.scss";
+
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Card, Form, Input, message } from "antd";
 import React, { useContext } from "react";
-import "./RegisterForm.scss";
-import { Card, Form, Input, Button, message } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-import { register } from "../../services/authAPI";
 import { observer } from "mobx-react-lite";
 import { AppStoreContext } from "../../stores/appStore";
+import { login } from "../../services/authAPI";
 import history from "../../stores/history";
 
-const RegisterForm: React.FC = observer(() => {
-  const store = useContext(AppStoreContext);
-
-  const onSubmit = async ({ username, password, email }: any) => {
+const LoginForm: React.FC = observer(() => {
+  const store = useContext(AppStoreContext)
+  const onSubmit = async ({username, password}: any) => {
     try {
-      let r = await register(username, password, email);
+      let r = await login(username, password);
       store.setAuth(r.token)
-      history.push('/');
+      history.push('/')
     } catch (error) {
       message.error(error)
     }
   };
   return (
-    <Card title="Register" className="register-form__card">
+    <Card title="Login" className="login-form__card">
       <Form
         name="normal_login"
         className="login-form"
@@ -39,20 +39,10 @@ const RegisterForm: React.FC = observer(() => {
           />
         </Form.Item>
         <Form.Item
-          name="email"
-          rules={[{ required: false, message: "Please input email!" }]}
-        >
-          <Input
-            prefix={<MailOutlined className="site-form-item-icon" />}
-            type="email"
-            placeholder="E-mail"
-          />
-        </Form.Item>
-        <Form.Item
           name="password"
           rules={[{ required: true, message: "Please input your Password!" }]}
         >
-          <Input.Password
+          <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
@@ -66,9 +56,9 @@ const RegisterForm: React.FC = observer(() => {
               htmlType="submit"
               className="login-form-button"
             >
-              Register
+              Log in
             </Button>
-            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/register">Register</NavLink>
           </div>
         </Form.Item>
       </Form>
@@ -76,4 +66,4 @@ const RegisterForm: React.FC = observer(() => {
   );
 });
 
-export default RegisterForm;
+export default LoginForm;

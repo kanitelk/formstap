@@ -7,5 +7,17 @@
   .logo {
     font-weight: 700;
     font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .actions {
+    button {
+      margin-left: 10px;
+    }
+  }
+
+  .authenticated {
+    display: flex;
+    flex-flow: row nowrap;
   }
 }
