@@ -20,7 +20,7 @@ export enum FieldTypeEnum {
   number = "number",
   phone = "phone",
   email = "email",
-  dropdown = "drowdown",
+  dropdown = "dropdown",
   date = "date"
 }
 

@@ -3,7 +3,9 @@
   flex-flow: row wrap;
   margin: -20px;
 
-  div {
+  & > div {
     flex: 50%;
+    border: 1px solid rgb(182, 182, 182);
+    padding: 10px;
   }
 }

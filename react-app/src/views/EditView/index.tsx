@@ -6,10 +6,12 @@ import Form from "../../components/Form/Form";
 
 const EditView: React.FC = () => {
   const { id } = useParams();
-  return <div className="edit-view">
-    <Editor />
-    <Form />
-  </div>;
+  return (
+    <div className="edit-view">
+      <Editor />
+      <Form id={id!} />
+    </div>
+  );
 };
 
 export default EditView;

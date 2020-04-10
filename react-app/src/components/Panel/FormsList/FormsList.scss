@@ -13,5 +13,13 @@
       max-height: 100px;
       object-fit: cover;
     }
+
+    .actions {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      margin-left: -10px;
+      margin-right: -10px;
+    }
   }
 }

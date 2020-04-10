@@ -1,11 +1,30 @@
 import "./FormsList.scss";
 
-import { Card } from "antd";
+import { Card, Dropdown, Button, Menu, Popconfirm, message } from "antd";
 import React, { useEffect, useState } from "react";
 
-import { Form, getForms } from "../../../services/editorAPI";
+import { Form, getForms, deleteForm } from "../../../services/editorAPI";
 import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
+import { DownOutlined, MoreOutlined } from "@ant-design/icons";
+
+const CardMenu: React.FC<any> = ({ form_id }: any) => {
+  const confirmDelete = async () => {
+    try {
+      let r = await deleteForm(form_id);
+      message.success("Form deleted!");
+    } catch (error) {
+      httpErrorHandler(error);
+    }
+  };
+  return (
+    <Menu>
+      <Menu.Item>
+        <span onClick={confirmDelete}>Delete</span>
+      </Menu.Item>
+    </Menu>
+  );
+};
 
 const FormsList: React.FC = () => {
   const [state, setState] = useState<{
@@ -36,9 +55,19 @@ const FormsList: React.FC = () => {
           // cover={<img src={form.img} />}
           key={form._id}
           title={form.title}
-          onClick={() => history.push(`/edit/${form._id}`)}
         >
           {/* {form.responces} responses */}
+          <div className="actions">
+            <Button onClick={() => history.push(`/edit/${form._id}`)}>
+              Edit
+            </Button>
+            <Dropdown
+              overlay={<CardMenu form_id={form._id} />}
+              placement="bottomLeft"
+            >
+              <Button icon={<MoreOutlined />} />
+            </Dropdown>
+          </div>
         </Card>
       ))}
     </div>

@@ -36,7 +36,7 @@ router.get(
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const form = await Form.findById(id);
+    const form = await Form.findById(id).populate("fields");
     if (!form) new HttpException(404, "Form not found");
     res.send(form);
   } catch (error) {
@@ -64,10 +64,35 @@ router.post(
   (req, res, next) => isAuthMiddleware(req, res, next),
   async (req, res) => {
     try {
-      const { type } = req.body;
+      const { type, title, form_id } = req.body;
       const user = decodeToken(getToken(req));
-      const newField = new Field({ user_id: user._id, type });
+      let form = await Form.findById(form_id);
+      if (!form.user_id.equals(user._id)) throw new HttpException(400, 'Unathorised for this form')
+      const newField = new Field({ user_id: user._id, type, title });
+      await newField.save();
+      form.fields.push(newField._id);
+      await form.save();
       res.send(newField);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
+
+// Delete form
+router.delete(
+  "/:form_id",
+  async (req, res) => {
+    try {
+      const { form_id } = req.params;
+      const user = decodeToken(getToken(req));
+      let form = await Form.findById(form_id);
+      if (form.user_id.equals(user._id)) {
+        await Form.findByIdAndDelete(form_id);
+        res.send({status: 'ok'})
+      } else {
+        throw new HttpException(401, 'This is not your form')
+      }
     } catch (error) {
       res.status(400).send(error);
     }
