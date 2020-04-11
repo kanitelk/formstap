@@ -7,6 +7,7 @@ import { EditorStoreContext } from "../../../../stores/editorStore";
 import { httpErrorHandler } from "../../../../services/utils";
 import { newField } from "../../../../services/editorAPI";
 import { useParams } from "react-router-dom";
+import { FormStoreContext } from "../../../../stores/formStore";
 
 const FieldTypes = [
   "input",
@@ -20,24 +21,26 @@ const FieldTypes = [
 
 const NewField: React.FC<any> = observer(() => {
   const { Option } = Select;
-  const { id } = useParams();
+
   const store = useContext(AppStoreContext);
+  const formStore = useContext(FormStoreContext);
   const editorStore = useContext(EditorStoreContext);
 
   const submit = async ({type, title}: any) => {
     try {
-      let r = await newField(type, title, id!);
+      let r = await newField(type, title, editorStore.form?._id!);
       console.log(r);
-      
+      formStore.updateCurrentForm();
+      editorStore.updateCurrentForm();
     } catch (error) {
       httpErrorHandler(error)
     }
   }
   return (
     <div className="new-field">
-      <Form onFinish={submit}>
+      <Form onFinish={submit} initialValues={{type: "input"}}>
         <Form.Item name="type" label="Type" required>
-          <Select defaultValue="input">
+          <Select>
             {FieldTypes.map((item) => (
               <Option value={item} key={item}>
                 {item}

@@ -10,6 +10,7 @@ import TextareaField from "./Fields/Textarea";
 import NumberField from "./Fields/Number";
 import PhoneField from "./Fields/Phone";
 import EmailField from "./Fields/Email";
+import { Progress } from "antd";
 
 const Form: React.FC<{ id: string }> = observer(({ id }) => {
   const store = useContext(FormStoreContext);
@@ -17,10 +18,12 @@ const Form: React.FC<{ id: string }> = observer(({ id }) => {
   useEffect(() => {
     store.getForm(id);
   }, []);
+
   return (
     <>
       {store.form && store.form.fields.length > 0 && (
         <div className="form">
+          <h1>Form</h1>
           {store.form.fields[store.current_step].type ===
             FieldTypeEnum.input && <InputField />}
           {store.form.fields[store.current_step].type ===
@@ -31,6 +34,10 @@ const Form: React.FC<{ id: string }> = observer(({ id }) => {
             FieldTypeEnum.phone && <PhoneField />}
           {store.form.fields[store.current_step].type ===
             FieldTypeEnum.email && <EmailField />}
+          <Progress
+            percent={(store.current_step / store.form?.fields!.length) * 100}
+            showInfo={false}
+          />
         </div>
       )}
     </>

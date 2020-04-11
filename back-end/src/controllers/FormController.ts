@@ -65,6 +65,7 @@ router.post(
   async (req, res) => {
     try {
       const { type, title, form_id } = req.body;
+      if (!type || !form_id) throw new HttpException(400, 'Some data not provided');
       const user = decodeToken(getToken(req));
       let form = await Form.findById(form_id);
       if (!form.user_id.equals(user._id)) throw new HttpException(400, 'Unathorised for this form')

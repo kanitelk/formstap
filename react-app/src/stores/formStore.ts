@@ -41,6 +41,10 @@ class FormStore {
   @action async submit() {
     console.log(toJS(this.answers));
   }
+
+  @action async updateCurrentForm() {
+    this.getForm(this.form?._id!);
+  }
 }
 
 export const FormStoreContext = createContext(new FormStore());

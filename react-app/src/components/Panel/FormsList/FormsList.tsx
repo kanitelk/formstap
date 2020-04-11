@@ -8,10 +8,11 @@ import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
 import { DownOutlined, MoreOutlined } from "@ant-design/icons";
 
-const CardMenu: React.FC<any> = ({ form_id }: any) => {
+const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   const confirmDelete = async () => {
     try {
       let r = await deleteForm(form_id);
+      onDelete();
       message.success("Form deleted!");
     } catch (error) {
       httpErrorHandler(error);
@@ -47,6 +48,10 @@ const FormsList: React.FC = () => {
       httpErrorHandler(error);
     }
   }, []);
+
+  const deleteForm = (id: string) => {
+    setState({...state, forms: state.forms.filter(item => item._id !== id)})
+  }
   return (
     <div className="forms-list">
       {state.forms.map((form) => (
@@ -62,7 +67,7 @@ const FormsList: React.FC = () => {
               Edit
             </Button>
             <Dropdown
-              overlay={<CardMenu form_id={form._id} />}
+              overlay={<CardMenu onDelete={deleteForm} form_id={form._id} />}
               placement="bottomLeft"
             >
               <Button icon={<MoreOutlined />} />
