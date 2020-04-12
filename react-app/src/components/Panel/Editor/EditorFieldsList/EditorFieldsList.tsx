@@ -7,7 +7,6 @@ import { EditorStoreContext } from "../../../../stores/editorStore";
 
 const EditorFieldsList: React.FC = observer(() => {
   const editorStore = useContext(EditorStoreContext);
-  console.log(editorStore.form);
   
   return (
     <div className="editor-fields-list">

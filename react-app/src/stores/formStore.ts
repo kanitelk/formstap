@@ -1,9 +1,9 @@
-import { action, computed, observable, toJS} from "mobx";
+import { action, computed, observable, toJS } from "mobx";
 import { createContext } from "react";
 import config from "../config";
 import { TForm, Answer } from "../components/Form/types";
-import { getForm } from "../services/editorAPI";
 import { httpErrorHandler } from "../services/utils";
+import { getForm } from "../services/formAPI";
 
 class FormStore {
   @observable isLoading: boolean = false;
@@ -28,11 +28,11 @@ class FormStore {
     let answer: Answer = {
       field_id: this.form!.fields[this.current_step]._id!,
       type: this.form!.fields[this.current_step].type,
-      answer: value
+      answer: value,
     };
     this.answers.push(answer);
-    if (this.current_step === (this.form?.fields!.length - 1)) {
-      this.submit()
+    if (this.current_step === this.form?.fields!.length - 1) {
+      this.submit();
     } else {
       this.current_step++;
     }

@@ -1,13 +1,24 @@
 export type FormSettings = {
+  is_active: boolean;
   is_public: boolean;
   language: string;
   show_progress_bar: boolean;
   show_copyright: boolean;
   meta: any;
-  notifications: any;
+  notifications: string;
 };
 
 export type TForm = {
+  _id?: string;
+  user_id?: string;
+  title: string;
+  theme: string;
+  fields: TField[];
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type TFormEditor = {
   _id?: string;
   user_id?: string;
   title: string;
@@ -16,7 +27,17 @@ export type TForm = {
   fields: TField[];
   createdAt?: Date;
   updatedAt?: Date;
+  reward: RewardSettings;
 };
+
+export type RewardSettings = {
+  address: string,
+  seed: string,
+  coin: string,
+  amount: number,
+  is_auto: boolean;
+  is_active: boolean;
+}
 
 export type TField = {
   _id?: string;

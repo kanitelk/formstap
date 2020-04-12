@@ -1,20 +1,28 @@
 import { action, computed, observable, toJS } from "mobx";
 import { createContext } from "react";
 import config from "../config";
-import { TForm } from "../components/Form/types";
+import { TForm, TFormEditor } from "../components/Form/types";
 import { httpErrorHandler } from "../services/utils";
-import { getForm } from "../services/editorAPI";
+import { getFormForEditor } from "../services/editorAPI";
+
+export enum EditorTabsEnum {
+  fields = "fields",
+  rewards = "rewards",
+  settings = "settings"
+}
 
 class EditorStore {
   @observable isLoading: boolean = false;
-  @observable form: TForm | null = null;
+  @observable form: TFormEditor | null = null;
+  @observable newFieldActive: boolean = false;
+  @observable editorTab: EditorTabsEnum = EditorTabsEnum.fields;
 
   @action async getForm(id: string) {
     try {
       this.isLoading = true;
-      const form = await getForm(id);
+      const form = await getFormForEditor(id);
       this.form = form;
-      console.log(toJS(this.form));
+      console.log(`Editor Form: `, toJS(this.form));
     } catch (error) {
       httpErrorHandler(error);
     } finally {

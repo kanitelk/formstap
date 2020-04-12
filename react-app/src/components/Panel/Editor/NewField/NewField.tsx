@@ -31,6 +31,7 @@ const NewField: React.FC<any> = observer(() => {
       let r = await newField(type, title, editorStore.form?._id!);
       console.log(r);
       formStore.updateCurrentForm();
+      editorStore.newFieldActive = false;
       editorStore.updateCurrentForm();
     } catch (error) {
       httpErrorHandler(error)
