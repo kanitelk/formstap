@@ -22,7 +22,7 @@ class EditorStore {
       this.isLoading = true;
       const form = await getFormForEditor(id);
       this.form = form;
-      console.log(`Editor Form: `, toJS(this.form));
+      console.log(toJS(this.form));
     } catch (error) {
       httpErrorHandler(error);
     } finally {

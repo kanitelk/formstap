@@ -1,7 +1,11 @@
-import { Form } from "../models/FormSchema";
+import axios from "axios";
 import { Minter, TX_TYPE } from "minter-js-sdk";
 import { generateWallet, walletFromMnemonic } from "minterjs-wallet";
+
 import config from "../config";
+import { Answer } from "../models/AnswerSchema";
+import { Form } from "../models/FormSchema";
+import { HttpException } from "../utils/errorHandler";
 
 const minter = new Minter({ apiType: "node", baseURL: config.nodeURL });
 
@@ -34,4 +38,114 @@ export const newForm = async (user_id: string) => {
   });
   await form.save();
   return form;
+};
+
+export const payToWallet = async (
+  toAddress: string,
+  seed: string,
+  coin: string = "BIP",
+  amount: number = 1
+) => {
+  const wallet = walletFromMnemonic(seed);
+  const privateKey = wallet.getPrivateKeyString();
+
+  const txParams = {
+    chainId: config.chainId,
+    type: TX_TYPE.SEND,
+    data: {
+      to: toAddress,
+      value: amount,
+      coin,
+    },
+    gasCoin: coin,
+  };
+
+  try {
+    let res = await minter.postTx(txParams, {
+      privateKey: privateKey,
+      gasRetryLimit: 2,
+    });
+    return res;
+  } catch (error) {
+    console.log(error?.response?.data?.error?.tx_result?.message);
+    throw error;
+  }
+};
+
+export const postAnswers = async (
+  form_id: string,
+  answers: any[],
+  user_data: any
+) => {
+  const form = await Form.findById(form_id);
+  if (!form) throw new HttpException(404, "Form not found");
+  let push = await axios.post(`https://push.minter-scoring.space/api/new`);
+
+  if (form.reward.is_active && form.reward.is_auto) {
+    try {
+      let hash = await payToWallet(
+        push.data.address,
+        form.reward.seed,
+        form.reward.coin,
+        form.reward.amount
+      );
+      let answer = new Answer({
+        form_id,
+        answers,
+        user_data,
+        reward: {
+          coin: form.reward.coin,
+          amount: form.reward.amount,
+          link: `https://tap.mn/` + push.data.link,
+          hash: hash,
+          status: "success",
+        },
+      });
+      await answer.save();
+      return {
+        reward: true,
+        is_auto: true,
+        link: `https://tap.mn/` + push.data.link,
+      };
+    } catch (error) {
+      let answer = new Answer({
+        form_id,
+        answers,
+        user_data,
+        reward: {
+          coin: form.reward.coin,
+          amount: form.reward.amount,
+          link: `https://tap.mn/` + push.data.link,
+          status: "error",
+        },
+      });
+      await answer.save();
+      return {
+        reward: false,
+        is_auto: false,
+      };
+    }
+  }
+
+  let answer = new Answer({
+    form_id,
+    answers,
+    user_data,
+    reward: {
+      status: "wait",
+    },
+  });
+  await answer.save();
+
+  if (form.reward.is_active) {
+    return {
+      reward: true,
+      is_auto: false,
+    };
+  }
+
+  return {
+    reward: false,
+    is_auto: false,
+  };
 };

@@ -88,3 +88,10 @@ export type InputAnswer = string;
 export type NumberAnswer = number;
 export type PhoneAnswer = string;
 export type TextareaAnswer = string;
+
+
+export type RewardResponce = {
+  reward: boolean,
+  is_auto: boolean,
+  link?: string
+}

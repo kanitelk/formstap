@@ -5,7 +5,7 @@ import { decodeToken, getToken, isAuthMiddleware } from "../actions/Auth";
 import { Field } from "../models/FieldSchema";
 import { Form } from "../models/FormSchema";
 import { HttpException } from "../utils/errorHandler";
-import { newForm } from "../actions/Form";
+import { newForm, postAnswers } from "../actions/Form";
 
 const router = express.Router();
 
@@ -38,6 +38,8 @@ router.get("/:id", async (req, res) => {
     if (!form) new HttpException(404, "Form not found");
     form.settings = null;
     form.reward = null;
+    if (!form.settings.is_active)
+      new HttpException(404, "Form is not active now!");
     res.send(form);
   } catch (error) {
     res.status(400).send(error);
@@ -159,9 +161,10 @@ router.put(
       let fld = await Field.findById(field_id);
       if (!fld.user_id.equals(user._id))
         throw new HttpException(400, "You are not owner of field");
-      fld = field;
+      // @ts-ignore
+      await Field.findByIdAndUpdate(field_id, field);
       await fld.save();
-      res.send(fld);
+      res.send({ status: "ok" });
     } catch (error) {
       res.status(400).send(error);
     }
@@ -186,5 +189,15 @@ router.delete(
     }
   }
 );
+
+router.post("/answer", async (req, res) => {
+  const { form_id, answers, user_data } = req.body;
+  try {
+    let responce = await postAnswers(form_id, answers, user_data);
+    res.send(responce)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+});
 
 export default router;

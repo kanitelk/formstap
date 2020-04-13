@@ -10,6 +10,8 @@ import { AppStoreContext } from "../stores/appStore";
 import history from "../stores/history";
 import HomeView from "../views/HomeView";
 import Header from "./Layout/Header";
+import FormView from "../views/FormView";
+import { FormStoreContext } from "../stores/formStore";
 
 const RegisterView = React.lazy(() => import("../views/RegisterView"));
 const LoginView = React.lazy(() => import("../views/LoginView"));
@@ -18,11 +20,12 @@ const EditView = React.lazy(() => import("../views/EditView"))
 
 const App: React.FC = observer(() => {
   const store = useContext(AppStoreContext);
+  const formStore = useContext(FormStoreContext);
   const { Content } = Layout;
   return (
     <Router history={history}>
       <Layout style={{ height: "100vh" }}>
-        <Header />
+        {!formStore.formView && <Header />}
         <Layout>
           {/* {store.isAuth && <Sider />} */}
           <Content className="content-wrapper">
@@ -31,6 +34,7 @@ const App: React.FC = observer(() => {
                 <Route path="/register" exact component={RegisterView} />
                 <Route path="/login" exact component={LoginView} />
                 <Route path="/edit/:id" exact component={EditView} />
+                <Route path="/form/:id" exact component={FormView} />
                 <Route
                   path="/"
                   exact

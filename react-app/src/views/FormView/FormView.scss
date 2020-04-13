@@ -1,0 +1,35 @@
+.form-view {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  
+  .form {
+    width: 50vw;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .form-view {
+    .form {
+      width: 400px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .form-view {
+    .form {
+      width: 30vw;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .form-view {
+    .form {
+      width: 90%;
+    }
+  }
+}

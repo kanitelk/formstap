@@ -18,7 +18,7 @@ const FormSettings: React.FC = observer(() => {
   }
   return (
     <Form
-      name="sorm-settings"
+      name="form-settings"
       className="form-settings"
       initialValues={{
         title: editorStore.form?.title,

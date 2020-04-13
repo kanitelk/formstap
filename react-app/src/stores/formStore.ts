@@ -1,22 +1,25 @@
 import { action, computed, observable, toJS } from "mobx";
 import { createContext } from "react";
 import config from "../config";
-import { TForm, Answer } from "../components/Form/types";
+import { TForm, Answer, RewardResponce } from "../components/Form/types";
 import { httpErrorHandler } from "../services/utils";
-import { getForm } from "../services/formAPI";
+import { getForm, sendAnswers } from "../services/formAPI";
 
 class FormStore {
   @observable isLoading: boolean = false;
   @observable form: TForm | null = null;
   @observable current_step: number = 0;
   @observable answers: Answer[] = [];
+  @observable formView: boolean = false;
+  @observable isSubmitted: boolean = false;
+  @observable reward: RewardResponce | null = null;
+  @observable isSubmittedError: boolean = false;
 
   @action async getForm(id: string) {
     try {
       this.isLoading = true;
       const form = await getForm(id);
       this.form = form;
-      console.log(toJS(this.form));
     } catch (error) {
       httpErrorHandler(error);
     } finally {
@@ -39,7 +42,15 @@ class FormStore {
   }
 
   @action async submit() {
-    console.log(toJS(this.answers));
+    try {
+      console.log(toJS(this.answers));
+      this.reward = await sendAnswers(this.form?._id!, this.answers, "test");
+    } catch (error) {
+      httpErrorHandler(error);
+      this.isSubmittedError = true;
+    } finally {
+      this.isSubmitted = true;
+    }
   }
 
   @action async updateCurrentForm() {

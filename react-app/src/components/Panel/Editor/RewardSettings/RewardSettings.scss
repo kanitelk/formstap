@@ -1,0 +1,23 @@
+.reward-settings {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+
+  .address {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+
+    .actions {
+      display: flex;
+      flex-flow: row nowrap;
+      margin-top: 15px;
+
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+}

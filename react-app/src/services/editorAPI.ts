@@ -1,7 +1,7 @@
 import config from "../config";
 import HTTP from "./http";
 import { AxiosRequestConfig } from "axios";
-import { TForm, TFormEditor } from "../components/Form/types";
+import { TForm, TFormEditor, TField } from "../components/Form/types";
 
 export type Form = {
   _id: string;
@@ -70,8 +70,25 @@ export const updateRewardSettings = async (
   is_auto: boolean
 ) => {
   let res = await HTTP.post(
-    `${config.apiURL}/forms/settings`,
+    `${config.apiURL}/forms/reward`,
     { is_active, is_auto, coin, amount, form_id },
+    axiosConfig
+  );
+  return res.data;
+};
+
+export const updateField = async (field_id: string, field: TField) => {
+  let res = await HTTP.put(
+    `${config.apiURL}/forms/field`,
+    { field_id, field },
+    axiosConfig
+  );
+  return res.data;
+}
+
+export const deleteField = async (field_id: string) => {
+  let res = await HTTP.delete(
+    `${config.apiURL}/forms/field/${field_id}`,
     axiosConfig
   );
   return res.data;

@@ -8,6 +8,7 @@ import { httpErrorHandler } from "../../../../services/utils";
 import { newField } from "../../../../services/editorAPI";
 import { useParams } from "react-router-dom";
 import { FormStoreContext } from "../../../../stores/formStore";
+import './NewField.scss'
 
 const FieldTypes = [
   "input",
@@ -15,7 +16,6 @@ const FieldTypes = [
   "number",
   "phone",
   "email",
-  "dropdown",
   "date",
 ];
 

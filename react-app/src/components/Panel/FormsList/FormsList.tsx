@@ -6,7 +6,8 @@ import React, { useEffect, useState } from "react";
 import { Form, getForms, deleteForm } from "../../../services/editorAPI";
 import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
-import { DownOutlined, MoreOutlined } from "@ant-design/icons";
+import { DownOutlined, MoreOutlined, LinkOutlined } from "@ant-design/icons";
+import copy from "copy-to-clipboard";
 
 const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   const confirmDelete = async () => {
@@ -50,8 +51,17 @@ const FormsList: React.FC = () => {
   }, []);
 
   const deleteForm = (id: string) => {
-    setState({...state, forms: state.forms.filter(item => item._id !== id)})
-  }
+    setState({
+      ...state,
+      forms: state.forms.filter((item) => item._id !== id),
+    });
+  };
+
+  const copyLink = (id: string) => {
+    copy(`${window.location.host}/form/${id}`);
+    message.success("Link copied");
+  };
+
   return (
     <div className="forms-list">
       {state.forms.map((form) => (
@@ -66,12 +76,19 @@ const FormsList: React.FC = () => {
             <Button onClick={() => history.push(`/edit/${form._id}`)}>
               Edit
             </Button>
-            <Dropdown
-              overlay={<CardMenu onDelete={deleteForm} form_id={form._id} />}
-              placement="bottomLeft"
-            >
-              <Button icon={<MoreOutlined />} />
-            </Dropdown>
+            <div className="actions">
+              <Button
+                onClick={() => copyLink(form._id!)}
+                icon={<LinkOutlined />}
+                style={{ marginRight: "5px" }}
+              />
+              <Dropdown
+                overlay={<CardMenu onDelete={deleteForm} form_id={form._id} />}
+                placement="bottomLeft"
+              >
+                <Button icon={<MoreOutlined />} />
+              </Dropdown>
+            </div>
           </div>
         </Card>
       ))}

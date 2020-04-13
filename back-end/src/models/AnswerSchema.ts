@@ -24,13 +24,42 @@ interface Answer {
 export type AnswerDocument = mongoose.Document & {
   form_id: mongoose.Types.ObjectId;
   answers: Answer[];
+  user_data: any;
+  reward: {
+    coin: string,
+    amount: number,
+    link?: string,
+    hash?: string
+    status: RewardStatusEnum
+  }
 };
+
+export enum RewardStatusEnum {
+  success = "success",
+  error = "error",
+  wait = "wait"
+}
 
 const answerSchema = new mongoose.Schema(
   {
-    title: String,
-    theme: String,
+    form_id: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Form'
+    },
     answers: [{ type: mongoose.SchemaTypes.Mixed }],
+    user_data: {
+      type: mongoose.SchemaTypes.Mixed
+    },
+    reward: {
+      coin: String,
+      amount: Number,
+      link: String,
+      hash: String,
+      status: {
+        type: String,
+        enum: ['success', 'error', 'wait']
+      }
+    }
   },
   {
     timestamps: true,

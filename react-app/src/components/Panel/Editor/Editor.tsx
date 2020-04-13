@@ -26,7 +26,6 @@ const Editor: React.FC = observer(() => {
         <Layout className="editor-main">
           {editorStore.editorTab === EditorTabsEnum.fields && (
             <div className="editor-fields-view">
-              <h1>Editor</h1>
               <Button
                 shape="round"
                 onClick={() =>
