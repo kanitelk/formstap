@@ -15,7 +15,7 @@ const InputField: React.FC = observer(() => {
       <div className="title">{form?.fields[current_step].title}</div>
       <Input
         onPressEnter={setAnswer}
-        autoFocus
+        autoFocus={store.formView}
         onChange={(e) => setState(e.target.value)}
       />
       <Button onClick={setAnswer}>Next</Button>

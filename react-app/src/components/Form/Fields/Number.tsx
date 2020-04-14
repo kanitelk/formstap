@@ -15,7 +15,7 @@ const NumberField: React.FC = observer(() => {
       <div className="title">{form?.fields[current_step].title}</div>
       <InputNumber
         onPressEnter={setAnswer}
-        autoFocus
+        autoFocus={store.formView}
         onChange={(value) => setState(value!)}
       />
       <Button onClick={setAnswer}>Next</Button>

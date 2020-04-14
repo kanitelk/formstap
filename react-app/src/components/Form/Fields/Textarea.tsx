@@ -15,7 +15,9 @@ const TextareaField: React.FC = observer(() => {
   return (
     <div className="textarea-field">
       <div className="title">{form?.fields[current_step].title}</div>
-      <TextArea autoFocus onChange={(e) => setState(e.target.value)} />
+      <TextArea
+        onChange={(e) => setState(e.target.value)}
+      />
       <Button onClick={setAnswer}>Next</Button>
     </div>
   );

@@ -1,23 +1,14 @@
 import "./FormsList.scss";
 
-import {
-  Card,
-  Dropdown,
-  Button,
-  Menu,
-  Popconfirm,
-  message,
-  Tag,
-  Alert,
-} from "antd";
+import { LinkOutlined, MoreOutlined } from "@ant-design/icons";
+import { Button, Card, Dropdown, Menu, message, Tag } from "antd";
+import copy from "copy-to-clipboard";
 import React, { useEffect, useState } from "react";
 
-import { Form, getForms, deleteForm } from "../../../services/editorAPI";
+import { getForms, deleteForm } from "../../../services/editorAPI";
 import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
-import { DownOutlined, MoreOutlined, LinkOutlined } from "@ant-design/icons";
-import copy from "copy-to-clipboard";
-import { TForm, TFormEditor } from "../../Form/types";
+import { TFormEditor } from "../../Form/types";
 
 const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   const confirmDelete = async () => {
@@ -53,7 +44,7 @@ const FormsList: React.FC = () => {
       forms = forms.sort((a, b) => {
         // @ts-ignore
         return new Date(b.updatedAt!) - new Date(a.updatedAt!);
-      })
+      });
       setState({ ...state, isLoading: false, forms: forms });
     };
     try {
@@ -81,57 +72,65 @@ const FormsList: React.FC = () => {
   };
 
   return (
-    <div className="forms-list">
-      {state.forms.map((form) => (
-        <Card
-          className="form-card"
-          // cover={<img src={form.img} />}
-          key={form._id}
-          title={form.title}
-        >
-          {/* {form.responces} responses */}
-          <div className="status">
-            {form.responces! > 0 ? (
-              <Tag
-                onClick={() => goToResponces(form._id!)}
-                className="responces"
-              >
-                <strong>{form.responces}</strong> responces
-              </Tag>
-            ) : (
-              <Tag
-                onClick={() => goToResponces(form._id!)}
-                className="responces"
-              >
-                No responces
-              </Tag>
-            )}
-            {form.reward.is_active ? (
-              <Tag color="green">Reward ON</Tag>
-            ) : (
-              <Tag color="orange">Reward OFF</Tag>
-            )}
-          </div>
-          <div className="actions">
-            <Button onClick={() => history.push(`/edit/${form._id}`)}>
-              Edit
-            </Button>
-            <div className="actions">
-              <Button
-                onClick={() => copyLink(form._id!)}
-                icon={<LinkOutlined />}
-              />
-              <Dropdown
-                overlay={<CardMenu onDelete={deleteForm} form_id={form._id} />}
-                placement="bottomLeft"
-              >
-                <Button icon={<MoreOutlined />} />
-              </Dropdown>
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
+    <>
+      {state.isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="forms-list">
+          {state.forms.map((form) => (
+            <Card
+              className="form-card"
+              // cover={<img src={form.img} />}
+              key={form._id}
+              title={form.title}
+            >
+              {/* {form.responces} responses */}
+              <div className="status">
+                {form.responces! > 0 ? (
+                  <Tag
+                    onClick={() => goToResponces(form._id!)}
+                    className="responces"
+                  >
+                    <strong>{form.responces}</strong> responces
+                  </Tag>
+                ) : (
+                  <Tag
+                    onClick={() => goToResponces(form._id!)}
+                    className="responces"
+                  >
+                    No responces
+                  </Tag>
+                )}
+                {form.reward.is_active ? (
+                  <Tag color="green">Reward ON</Tag>
+                ) : (
+                  <Tag color="orange">Reward OFF</Tag>
+                )}
+              </div>
+              <div className="actions">
+                <Button onClick={() => history.push(`/edit/${form._id}`)}>
+                  Edit
+                </Button>
+                <div className="actions">
+                  <Button
+                    onClick={() => copyLink(form._id!)}
+                    icon={<LinkOutlined />}
+                  />
+                  <Dropdown
+                    overlay={
+                      <CardMenu onDelete={deleteForm} form_id={form._id} />
+                    }
+                    placement="bottomLeft"
+                  >
+                    <Button icon={<MoreOutlined />} />
+                  </Dropdown>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

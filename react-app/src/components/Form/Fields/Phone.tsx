@@ -16,7 +16,7 @@ const PhoneField: React.FC = observer(() => {
       <div className="title">{form?.fields[current_step].title}</div>
       <Input
         prefix={<PhoneOutlined />}
-        autoFocus
+        autoFocus={store.formView}
         onChange={(e) => setState(e.target.value)}
         minLength={10}
         maxLength={12}

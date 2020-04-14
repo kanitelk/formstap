@@ -39,7 +39,7 @@ export const sendAnswers = async (
 export const getIPdata = async () => {
   try {
     let res = await HTTP.get(
-      `http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,lat,lon,timezone,as,mobile,proxy,query`
+      `https://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,lat,lon,timezone,as,mobile,proxy,query`
     );
     return res.data;
   } catch (error) {

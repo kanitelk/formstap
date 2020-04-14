@@ -18,7 +18,7 @@ const EmailField: React.FC = observer(() => {
         onPressEnter={setAnswer}
         prefix={<MailOutlined />}
         type="email"
-        autoFocus
+        autoFocus={store.formView}
         onChange={(e) => setState(e.target.value)}
       />
       <Button onClick={setAnswer}>Next</Button>
