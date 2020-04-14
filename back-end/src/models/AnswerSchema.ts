@@ -9,7 +9,7 @@ import { PhoneAnswer } from "./FieldTypes/PhoneField";
 import { TextareaAnswer } from "./FieldTypes/TextareaField";
 
 interface Answer {
-  field_id: mongoose.Types.ObjectId,
+  field_id: mongoose.Types.ObjectId;
   type: FieldTypeEnum;
   answer:
     | DateAnswer
@@ -24,32 +24,32 @@ interface Answer {
 export type AnswerDocument = mongoose.Document & {
   form_id: mongoose.Types.ObjectId;
   answers: Answer[];
-  user_data: any;
   reward: {
-    coin: string,
-    amount: number,
-    link?: string,
-    hash?: string
-    status: RewardStatusEnum
-  }
+    coin: string;
+    amount: number;
+    link?: string;
+    hash?: string;
+    status: RewardStatusEnum;
+  };
+  user_data: {
+    fingerprint: string;
+    ip_data: any;
+  };
 };
 
 export enum RewardStatusEnum {
   success = "success",
   error = "error",
-  wait = "wait"
+  wait = "wait",
 }
 
 const answerSchema = new mongoose.Schema(
   {
     form_id: {
       type: mongoose.Types.ObjectId,
-      ref: 'Form'
+      ref: "Form",
     },
     answers: [{ type: mongoose.SchemaTypes.Mixed }],
-    user_data: {
-      type: mongoose.SchemaTypes.Mixed
-    },
     reward: {
       coin: String,
       amount: Number,
@@ -57,9 +57,15 @@ const answerSchema = new mongoose.Schema(
       hash: String,
       status: {
         type: String,
-        enum: ['success', 'error', 'wait']
-      }
-    }
+        enum: ["success", "error", "wait"],
+      },
+    },
+    user_data: {
+      fingerprint: String,
+      ip_data: {
+        type: mongoose.SchemaTypes.Mixed,
+      },
+    },
   },
   {
     timestamps: true,

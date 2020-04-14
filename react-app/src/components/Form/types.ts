@@ -28,6 +28,7 @@ export type TFormEditor = {
   createdAt?: Date;
   updatedAt?: Date;
   reward: RewardSettings;
+  responces?: number;
 };
 
 export type RewardSettings = {
@@ -68,6 +69,16 @@ export enum FieldTypeEnum {
   date = "date",
 }
 
+export type Responce = {
+  reward: RewardResponce,
+  user_data: any,
+  answers: Answer[],
+  _id: string,
+  form_id: string,
+  createdAt: Date,
+  updatedAr: Date
+}
+
 export interface Answer {
   field_id: string;
   type: FieldTypeEnum;
@@ -93,5 +104,8 @@ export type TextareaAnswer = string;
 export type RewardResponce = {
   reward: boolean,
   is_auto: boolean,
-  link?: string
+  link?: string,
+  status: string,
+  coin?: string,
+  amount?: number
 }

@@ -3,7 +3,7 @@ import { createContext } from "react";
 import config from "../config";
 import { TForm, Answer, RewardResponce } from "../components/Form/types";
 import { httpErrorHandler } from "../services/utils";
-import { getForm, sendAnswers } from "../services/formAPI";
+import { getForm, sendAnswers, getFingerprint, getIPdata } from "../services/formAPI";
 
 class FormStore {
   @observable isLoading: boolean = false;
@@ -14,6 +14,7 @@ class FormStore {
   @observable isSubmitted: boolean = false;
   @observable reward: RewardResponce | null = null;
   @observable isSubmittedError: boolean = false;
+  @observable isSubmitting: boolean = false;
 
   @action async getForm(id: string) {
     try {
@@ -42,19 +43,34 @@ class FormStore {
   }
 
   @action async submit() {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
     try {
-      console.log(toJS(this.answers));
-      this.reward = await sendAnswers(this.form?._id!, this.answers, "test");
+      const user_data = {
+        fingerprint: getFingerprint(),
+        ip_data: await getIPdata()
+      }
+      this.reward = await sendAnswers(this.form?._id!, this.answers, user_data);
     } catch (error) {
       httpErrorHandler(error);
       this.isSubmittedError = true;
     } finally {
       this.isSubmitted = true;
+      this.isSubmitting = false;
     }
   }
 
   @action async updateCurrentForm() {
     this.getForm(this.form?._id!);
+  }
+
+  @action clear() {
+    this.form = null;
+    this.current_step = 0;
+    this.answers = [];
+    this.isSubmitted = false;
+    this.reward = null;
+    this.isSubmittedError = false;
   }
 }
 

@@ -4,6 +4,8 @@ import { Answer, RewardResponce, TForm } from "../components/Form/types";
 import config from "../config";
 import HTTP from "./http";
 
+import fp2 from 'fingerprintjs2';
+
 export type Form = {
   _id: string;
   title: string;
@@ -33,3 +35,18 @@ export const sendAnswers = async (
   );
   return res.data;
 };
+
+export const getIPdata = async () => {
+  try {
+    let res = await HTTP.get(
+      `http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,lat,lon,timezone,as,mobile,proxy,query`
+    );
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getFingerprint = () => {
+  return fp2.x64hash128('fp2', 6);
+}

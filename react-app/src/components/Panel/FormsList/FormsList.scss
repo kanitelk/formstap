@@ -4,7 +4,7 @@
   justify-content: center;
 
   .form-card {
-    width: 200px;
+    width: 230px;
     margin: 10px;
 
     img {
@@ -14,12 +14,38 @@
       object-fit: cover;
     }
 
-    .actions {
+    .ant-card-body {
       display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      margin-left: -10px;
-      margin-right: -10px;
+      flex-flow: column wrap;
+      
+      .status {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: -8px;
+
+        .responces {
+          cursor: pointer;
+          user-select: none;
+
+          &:hover {
+            background-color: #ccc;
+          }
+        }
+      }
+
+      >.actions {
+        margin-top: 10px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        button:first-of-type {
+          margin-right: 5px;
+        }
+      }
     }
   }
 }

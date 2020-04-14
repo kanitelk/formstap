@@ -12,11 +12,12 @@ import HomeView from "../views/HomeView";
 import Header from "./Layout/Header";
 import FormView from "../views/FormView";
 import { FormStoreContext } from "../stores/formStore";
+import ResponcesView from "../views/ResponcesView";
 
 const RegisterView = React.lazy(() => import("../views/RegisterView"));
 const LoginView = React.lazy(() => import("../views/LoginView"));
 const PanelView = React.lazy(() => import("../views/PanelView"));
-const EditView = React.lazy(() => import("../views/EditView"))
+const EditView = React.lazy(() => import("../views/EditView"));
 
 const App: React.FC = observer(() => {
   const store = useContext(AppStoreContext);
@@ -35,6 +36,7 @@ const App: React.FC = observer(() => {
                 <Route path="/login" exact component={LoginView} />
                 <Route path="/edit/:id" exact component={EditView} />
                 <Route path="/form/:id" exact component={FormView} />
+                <Route path="/responces/:id" exact component={ResponcesView} />
                 <Route
                   path="/"
                   exact

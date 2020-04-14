@@ -20,6 +20,8 @@ const Form: React.FC<{ id: string }> = observer(({ id }) => {
   const store = useContext(FormStoreContext);
   useEffect(() => {
     store.getForm(id);
+
+    return () => {store.clear()}
   }, []);
 
   const AnimationEffect = styled.div`

@@ -1,0 +1,20 @@
+.responces-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ant-table-container {
+  overflow-x: scroll !important;
+}
+
+.responces-table {
+  .reward-cell {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+  }
+
+  th {
+    text-align: center !important;
+  }
+}

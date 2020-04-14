@@ -1,0 +1,11 @@
+.responces-view {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+  }
+}

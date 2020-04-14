@@ -28,6 +28,7 @@ export type FormDocument = mongoose.Document & {
   theme: string;
   fields: FieldDocument[];
   reward: RewardSettings;
+  responces?: number;
 };
 
 const formSchema = new mongoose.Schema(
@@ -57,7 +58,8 @@ const formSchema = new mongoose.Schema(
         type: Boolean,
         default: false
       }
-    }
+    },
+    responces: Number
   },
   {
     timestamps: true,

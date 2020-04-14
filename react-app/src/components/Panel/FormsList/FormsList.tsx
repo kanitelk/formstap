@@ -1,6 +1,15 @@
 import "./FormsList.scss";
 
-import { Card, Dropdown, Button, Menu, Popconfirm, message } from "antd";
+import {
+  Card,
+  Dropdown,
+  Button,
+  Menu,
+  Popconfirm,
+  message,
+  Tag,
+  Alert,
+} from "antd";
 import React, { useEffect, useState } from "react";
 
 import { Form, getForms, deleteForm } from "../../../services/editorAPI";
@@ -8,6 +17,7 @@ import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
 import { DownOutlined, MoreOutlined, LinkOutlined } from "@ant-design/icons";
 import copy from "copy-to-clipboard";
+import { TForm, TFormEditor } from "../../Form/types";
 
 const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   const confirmDelete = async () => {
@@ -31,7 +41,7 @@ const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
 const FormsList: React.FC = () => {
   const [state, setState] = useState<{
     isLoading: boolean;
-    forms: Form[];
+    forms: TFormEditor[];
   }>({
     isLoading: false,
     forms: [],
@@ -40,6 +50,10 @@ const FormsList: React.FC = () => {
     let r = async () => {
       setState({ ...state, isLoading: true });
       let forms = await getForms();
+      forms = forms.sort((a, b) => {
+        // @ts-ignore
+        return new Date(b.updatedAt!) - new Date(a.updatedAt!);
+      })
       setState({ ...state, isLoading: false, forms: forms });
     };
     try {
@@ -62,6 +76,10 @@ const FormsList: React.FC = () => {
     message.success("Link copied");
   };
 
+  const goToResponces = (id: string) => {
+    history.push(`/responces/${id}`);
+  };
+
   return (
     <div className="forms-list">
       {state.forms.map((form) => (
@@ -72,6 +90,28 @@ const FormsList: React.FC = () => {
           title={form.title}
         >
           {/* {form.responces} responses */}
+          <div className="status">
+            {form.responces! > 0 ? (
+              <Tag
+                onClick={() => goToResponces(form._id!)}
+                className="responces"
+              >
+                <strong>{form.responces}</strong> responces
+              </Tag>
+            ) : (
+              <Tag
+                onClick={() => goToResponces(form._id!)}
+                className="responces"
+              >
+                No responces
+              </Tag>
+            )}
+            {form.reward.is_active ? (
+              <Tag color="green">Reward ON</Tag>
+            ) : (
+              <Tag color="orange">Reward OFF</Tag>
+            )}
+          </div>
           <div className="actions">
             <Button onClick={() => history.push(`/edit/${form._id}`)}>
               Edit
@@ -80,7 +120,6 @@ const FormsList: React.FC = () => {
               <Button
                 onClick={() => copyLink(form._id!)}
                 icon={<LinkOutlined />}
-                style={{ marginRight: "5px" }}
               />
               <Dropdown
                 overlay={<CardMenu onDelete={deleteForm} form_id={form._id} />}

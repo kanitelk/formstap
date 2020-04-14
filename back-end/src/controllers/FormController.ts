@@ -3,9 +3,10 @@ import express from "express";
 
 import { decodeToken, getToken, isAuthMiddleware } from "../actions/Auth";
 import { Field } from "../models/FieldSchema";
-import { Form } from "../models/FormSchema";
+import { Form, FormDocument } from "../models/FormSchema";
 import { HttpException } from "../utils/errorHandler";
 import { newForm, postAnswers } from "../actions/Form";
+import { Answer } from "../models/AnswerSchema";
 
 const router = express.Router();
 
@@ -21,9 +22,15 @@ router.use(
 
 // Get user forms
 router.get("/", async (req, res) => {
+  const countResponces = async (form: FormDocument): Promise<FormDocument> => {
+    form.responces = await Answer.countDocuments({ form_id: form._id });
+    return form;
+  };
   try {
     const user = decodeToken(getToken(req));
     let forms = await Form.find({ user_id: user._id });
+    const promises = forms.map(countResponces);
+    await Promise.all(promises);
     res.send(forms);
   } catch (error) {
     res.status(400).send(error);
@@ -53,9 +60,25 @@ router.get("/editor/:id", async (req, res) => {
     const user = decodeToken(getToken(req));
     const form = await Form.findById(id).populate("fields");
     if (!form.user_id.equals(user._id))
-      new HttpException(401, "You are not owner of rhis form");
+      new HttpException(401, "You are not owner of this form");
     if (!form) new HttpException(404, "Form not found");
     res.send(form);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// Get form answers by Form ID
+router.get("/answers/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = decodeToken(getToken(req));
+    const form = await Form.findById(id);
+    if (!form.user_id.equals(user._id))
+      new HttpException(401, "You are not owner of this form");
+    if (!form) new HttpException(404, "Form not found");
+    const answers = await Answer.find({ form_id: id }).sort({createdAt: -1});
+    res.send(answers);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -194,9 +217,9 @@ router.post("/answer", async (req, res) => {
   const { form_id, answers, user_data } = req.body;
   try {
     let responce = await postAnswers(form_id, answers, user_data);
-    res.send(responce)
+    res.send(responce);
   } catch (error) {
-    res.status(400).send(error)
+    res.status(400).send(error);
   }
 });
 
