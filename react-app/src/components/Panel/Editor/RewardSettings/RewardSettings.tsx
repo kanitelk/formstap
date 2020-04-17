@@ -2,19 +2,20 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import "./RewardSettings.scss";
 import { EditorStoreContext } from "../../../../stores/editorStore";
-import { Form, Input, Button, message, Switch, InputNumber } from "antd";
+import { Form, Input, Button, message, Switch, InputNumber, Select } from "antd";
 import { updateRewardSettings } from "../../../../services/editorAPI";
 import { httpErrorHandler } from "../../../../services/utils";
 import copy from "copy-to-clipboard";
 var QRCode = require("qrcode.react");
 
 const RewardSettings: React.FC = observer(() => {
+  const { Option } = Select;
   const editorStore = useContext(EditorStoreContext);
   const save = async ({ coin, amount, is_active, is_auto }: any) => {
     try {
       await updateRewardSettings(
         editorStore.form?._id!,
-        coin,
+        coin.toUpperCase(),
         amount,
         is_active,
         is_auto
@@ -53,6 +54,16 @@ const RewardSettings: React.FC = observer(() => {
         }}
         onFinish={save}
       >
+        <Form.Item name="type" label="Push Provider">
+          <Select defaultValue="tap.mn">
+            <Option value="tap.mn">Tap.mn</Option>
+            <Option value="yyy.cash" disabled>YYY.cash</Option>
+            <Option value="5s.gift" disabled>5s.gift</Option>
+            <Option value="reef.mn" disabled>push.reef.mn</Option>
+            <Option value="minterpush.com" disabled>MinterPush.com</Option>
+            <Option value="bipplus" disabled>BIP+</Option>
+          </Select>
+        </Form.Item>
         <Form.Item name="coin" label="Coin">
           <Input />
         </Form.Item>

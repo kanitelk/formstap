@@ -1,7 +1,7 @@
 import "./App.scss";
 import "antd/dist/antd.css";
 
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { Suspense, useContext } from "react";
 import { Route, Router, Switch } from "react-router-dom";
@@ -30,7 +30,7 @@ const App: React.FC = observer(() => {
         <Layout>
           {/* {store.isAuth && <Sider />} */}
           <Content className="content-wrapper">
-            <Suspense fallback={<p>Loading</p>}>
+            <Suspense fallback={<Spin />}>
               <Switch>
                 <Route path="/register" exact component={RegisterView} />
                 <Route path="/login" exact component={LoginView} />

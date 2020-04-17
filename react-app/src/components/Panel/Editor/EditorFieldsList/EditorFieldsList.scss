@@ -6,4 +6,14 @@
       justify-content: space-between;
     }
   }
+
+  .ant-collapse-header {
+    .anticon {
+      margin-right: 10px;
+    }
+
+    .anticon-caret-down {
+      color: #ccc;
+    }
+  }
 }

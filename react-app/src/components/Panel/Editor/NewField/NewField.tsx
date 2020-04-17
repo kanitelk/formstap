@@ -28,6 +28,7 @@ const NewField: React.FC<any> = observer(() => {
 
   const submit = async ({type, title}: any) => {
     try {
+      editorStore.isLoading = true;
       let r = await newField(type, title, editorStore.form?._id!);
       console.log(r);
       formStore.updateCurrentForm();

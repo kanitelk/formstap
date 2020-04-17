@@ -15,7 +15,7 @@ const LoginForm: React.FC = observer(() => {
   const onSubmit = async ({username, password}: any) => {
     try {
       let r = await login(username, password);
-      store.setAuth(r.token)
+      await store.setAuth(r.token)
       history.push('/')
     } catch (error) {
       httpErrorHandler(error)

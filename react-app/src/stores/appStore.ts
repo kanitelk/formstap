@@ -2,6 +2,7 @@ import { action, computed, observable } from "mobx";
 import { createContext } from "react";
 import config from "../config";
 import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 
 class AppStore {
   @observable isAuth: boolean = false;
@@ -9,14 +10,22 @@ class AppStore {
   @observable login: string | null = null;
 
   constructor() {
-    if (localStorage.getItem("token"))
-      this.setAuth(localStorage.getItem("token")!);
+    const token = localStorage.getItem("token");
+    if (token) {
+      let data = jwt_decode(token);
+      //@ts-ignore
+      if (new Date() > new Date(data.exp * 1000)) {
+        this.logout();
+      } else {
+        this.setAuth(localStorage.getItem("token")!);
+      }
+    }
   }
 
-  @action setAuth(token: string) {
+  @action async setAuth(token: string) {
     try {
       const data = jwt.decode(token);
-      localStorage.setItem("token", token);
+      await localStorage.setItem("token", token);
       this.isAuth = true;
       this.token = token;
       // @ts-ignore

@@ -20,6 +20,7 @@ const EmailField: React.FC = observer(() => {
         type="email"
         autoFocus={store.formView}
         onChange={(e) => setState(e.target.value)}
+        placeholder="hello@mail.com"
       />
       <Button onClick={setAnswer}>Next</Button>
     </div>

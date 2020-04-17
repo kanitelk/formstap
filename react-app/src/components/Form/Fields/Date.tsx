@@ -15,6 +15,7 @@ const DateField: React.FC = observer(() => {
     <div className="date-field">
       <div className="title">{form?.fields[current_step].title}</div>
       <DatePicker
+        placeholder="2020-01-01"
         autoFocus={store.formView}
         onChange={(date, dateString) => setState(dateString)}
       />

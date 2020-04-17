@@ -11,18 +11,20 @@ import { FormStoreContext } from "../../../../stores/formStore";
 const EmailSettings: React.FC<{ field: TField }> = observer(({ field }) => {
   const editorStore = useContext(EditorStoreContext);
   const formStore = useContext(FormStoreContext);
-    const delField = async () => {
-      try {
-        await deleteField(field._id!);
+  const delField = async () => {
+    try {
+      editorStore.isLoading = true;
+      await deleteField(field._id!);
       message.success("Field deleted");
-        editorStore.updateCurrentForm();
-        formStore.updateCurrentForm();
-      } catch (error) {
-        httpErrorHandler(error);
-      }
-    };
+      editorStore.updateCurrentForm();
+      formStore.updateCurrentForm();
+    } catch (error) {
+      httpErrorHandler(error);
+    }
+  };
   const save = async ({ title, notifications, is_active }: any) => {
     try {
+      editorStore.isLoading = true;
       const newField = { ...field, title: title };
       await updateField(field._id!, newField);
       message.success("Field updated");

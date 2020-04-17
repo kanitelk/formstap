@@ -13,6 +13,7 @@ const DateSettings: React.FC<{ field: TField }> = observer(({ field }) => {
   const formStore = useContext(FormStoreContext);
   const delField = async () => {
     try {
+      editorStore.isLoading = true;
       await deleteField(field._id!);
       message.success("Field updated");
       editorStore.updateCurrentForm();
@@ -23,6 +24,7 @@ const DateSettings: React.FC<{ field: TField }> = observer(({ field }) => {
   };
   const save = async ({ title, notifications, is_active }: any) => {
     try {
+      editorStore.isLoading = true;
       const newField = { ...field, title: title };
       await updateField(field._id!, newField);
       message.success("Field updated");

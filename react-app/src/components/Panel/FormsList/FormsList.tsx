@@ -1,7 +1,7 @@
 import "./FormsList.scss";
 
 import { LinkOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Card, Dropdown, Menu, message, Tag } from "antd";
+import { Button, Card, Dropdown, Menu, message, Tag, Spin } from "antd";
 import copy from "copy-to-clipboard";
 import React, { useEffect, useState } from "react";
 
@@ -74,7 +74,7 @@ const FormsList: React.FC = () => {
   return (
     <>
       {state.isLoading ? (
-        <p>Loading...</p>
+        <Spin />
       ) : (
         <div className="forms-list">
           {state.forms.map((form) => (
