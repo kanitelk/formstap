@@ -46,7 +46,3 @@ export const getIPdata = async () => {
     return null;
   }
 };
-
-export const getFingerprint = () => {
-  return fp2.x64hash128('fp2', 6);
-}

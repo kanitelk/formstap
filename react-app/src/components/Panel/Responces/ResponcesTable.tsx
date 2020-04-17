@@ -54,7 +54,7 @@ const ResponcesTable: React.FC = observer(() => {
             );
           }}
         />
-        <Column dataIndex={["user_data", "ip_data", "query"]} title="IP" />
+        {/* <Column dataIndex={["user_data", "ip_data", "query"]} title="IP" />
         <Column dataIndex={["user_data", "ip_data", "city"]} title="City" />
         <Column
           dataIndex={["user_data", "ip_data", "proxy"]}
@@ -63,7 +63,7 @@ const ResponcesTable: React.FC = observer(() => {
             if (val === false) return <Tag color="green">Clear IP</Tag>;
             if (val === true) return <Tag color="red">Black IP</Tag>;
           }}
-        />
+        /> */}
         <Column
           dataIndex={["user_data", "fingerprint"]}
           title="Fingerprint"

@@ -9,13 +9,10 @@ const FormView: React.FC = observer(() => {
   const { id } = useParams();
   const formStore = useContext(FormStoreContext);
 
-  // useEffect(() => {
-  //   formStore.getForm(id!);
-  // }, [])
-
   useEffect(() => {
     document.title = formStore.form?.title!;
     formStore.formView = true;
+    formStore.runFP();
 
     return () => {
       document.title = "TapForms";

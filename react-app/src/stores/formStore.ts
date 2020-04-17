@@ -3,8 +3,8 @@ import { createContext } from "react";
 import config from "../config";
 import { TForm, Answer, RewardResponce } from "../components/Form/types";
 import { httpErrorHandler } from "../services/utils";
-import { getForm, sendAnswers, getFingerprint, getIPdata } from "../services/formAPI";
-
+import { getForm, sendAnswers, getIPdata } from "../services/formAPI";
+import fp2 from "fingerprintjs2";
 class FormStore {
   @observable isLoading: boolean = false;
   @observable form: TForm | null = null;
@@ -15,6 +15,7 @@ class FormStore {
   @observable reward: RewardResponce | null = null;
   @observable isSubmittedError: boolean = false;
   @observable isSubmitting: boolean = false;
+  @observable fingerprint: string = "";
 
   @action async getForm(id: string) {
     try {
@@ -47,9 +48,9 @@ class FormStore {
     this.isSubmitting = true;
     try {
       const user_data = {
-        fingerprint: getFingerprint(),
-        ip_data: await getIPdata()
-      }
+        fingerprint: this.fingerprint,
+        ip_data: null,
+      };
       this.reward = await sendAnswers(this.form?._id!, this.answers, user_data);
     } catch (error) {
       httpErrorHandler(error);
@@ -64,6 +65,19 @@ class FormStore {
     this.getForm(this.form?._id!);
   }
 
+  @action async runFP() {
+    if (this.fingerprint.length > 1) return;
+    const setFP = (fp: string) => {
+      this.fingerprint = fp;
+    };
+    let hash = await fp2.get({}, function (components) {
+      let values = components.map(function (component) {
+        return component.value;
+      });
+      setFP(fp2.x64hash128(values.join(""), 31));
+    });
+  }
+
   @action clear() {
     this.form = null;
     this.current_step = 0;
@@ -71,6 +85,7 @@ class FormStore {
     this.isSubmitted = false;
     this.reward = null;
     this.isSubmittedError = false;
+    this.fingerprint = '';
   }
 }
 

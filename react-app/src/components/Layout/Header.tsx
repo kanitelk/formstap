@@ -6,6 +6,7 @@ import React, { useContext } from "react";
 
 import history from "../../stores/history";
 import { AppStoreContext } from "../../stores/appStore";
+import { FormStoreContext } from "../../stores/formStore";
 
 const Header: React.FC = observer(() => {
   const { Header } = Layout;
@@ -13,6 +14,7 @@ const Header: React.FC = observer(() => {
 
   return (
     <Header className="header">
+      {/* <Button onClick={() => alert(getFingerprint())}>FP</Button> */}
       <div
         onClick={() => {
           history.push("/");

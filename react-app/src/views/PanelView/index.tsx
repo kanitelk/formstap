@@ -6,7 +6,6 @@ import { Button, message } from "antd";
 import { newForm } from "../../services/editorAPI";
 import history from "../../stores/history";
 import { httpErrorHandler } from "../../services/utils";
-import { getFingerprint } from "../../services/formAPI";
 
 const PanelView: React.FC = () => {
   const createForm = async () => {
