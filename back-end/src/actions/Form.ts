@@ -79,7 +79,7 @@ export const postAnswers = async (
 ) => {
   const form = await Form.findById(form_id);
   if (!form) throw new HttpException(404, "Form not found");
-  let push = await axios.post(`https://push.minter-scoring.space/api/new`);
+  let push = await axios.post(`https://api.tap.mn/api/new`);
 
   if (form.reward.is_active && form.reward.is_auto) {
     try {

@@ -1,6 +1,6 @@
 import "./Form.scss";
 
-import { Progress } from "antd";
+import { Progress, Spin } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { fadeIn } from "react-animations";
@@ -21,7 +21,9 @@ const Form: React.FC<{ id: string }> = observer(({ id }) => {
   useEffect(() => {
     store.getForm(id);
 
-    return () => {store.clear()}
+    return () => {
+      store.clear();
+    };
   }, []);
 
   const AnimationEffect = styled.div`
@@ -30,37 +32,39 @@ const Form: React.FC<{ id: string }> = observer(({ id }) => {
 
   return (
     <>
-      {store.form && store.form.fields.length > 0 && (
-        <div className="form">
-          {!store.isSubmitted ? (
-            <>
-              <AnimationEffect>
-                {store.current_step === 0 && <h1>{store.form.title}</h1>}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.input && <InputField />}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.textarea && <TextareaField />}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.number && <NumberField />}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.phone && <PhoneField />}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.email && <EmailField />}
-                {store.form.fields[store.current_step].type ===
-                  FieldTypeEnum.date && <DateField />}
-              </AnimationEffect>
-              <Progress
-                percent={
-                  (store.current_step / store.form?.fields!.length) * 100
-                }
-                showInfo={false}
-              />
-            </>
-          ) : (
-            <Finish />
-          )}
-        </div>
-      )}
+      <Spin spinning={store.isSubmitting || store.isLoading}>
+        {store.form && store.form.fields.length > 0 && (
+          <div className="form">
+            {!store.isSubmitted ? (
+              <>
+                <AnimationEffect>
+                  {store.current_step === 0 && <h1>{store.form.title}</h1>}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.input && <InputField />}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.textarea && <TextareaField />}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.number && <NumberField />}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.phone && <PhoneField />}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.email && <EmailField />}
+                  {store.form.fields[store.current_step].type ===
+                    FieldTypeEnum.date && <DateField />}
+                </AnimationEffect>
+                <Progress
+                  percent={
+                    (store.current_step / store.form?.fields!.length) * 100
+                  }
+                  showInfo={false}
+                />
+              </>
+            ) : (
+              <Finish />
+            )}
+          </div>
+        )}
+      </Spin>
     </>
   );
 });

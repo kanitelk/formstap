@@ -5,6 +5,7 @@ import { TForm, Answer, RewardResponce } from "../components/Form/types";
 import { httpErrorHandler } from "../services/utils";
 import { getForm, sendAnswers, getIPdata } from "../services/formAPI";
 import fp2 from "fingerprintjs2";
+import { message } from "antd";
 class FormStore {
   @observable isLoading: boolean = false;
   @observable form: TForm | null = null;
@@ -30,6 +31,10 @@ class FormStore {
   }
 
   @action setAnswer(value: any) {
+    if (!value) {
+      message.warn('Answer should not be empty!');
+      return;
+    }
     let answer: Answer = {
       field_id: this.form!.fields[this.current_step]._id!,
       type: this.form!.fields[this.current_step].type,

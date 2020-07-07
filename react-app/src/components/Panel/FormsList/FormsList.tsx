@@ -3,12 +3,14 @@ import "./FormsList.scss";
 import { LinkOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button, Card, Dropdown, Menu, message, Tag, Spin } from "antd";
 import copy from "copy-to-clipboard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { getForms, deleteForm } from "../../../services/editorAPI";
 import { httpErrorHandler } from "../../../services/utils";
 import history from "../../../stores/history";
 import { TFormEditor } from "../../Form/types";
+import { observer } from "mobx-react-lite";
+import { AppStoreContext } from "../../../stores/appStore";
 
 const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   const confirmDelete = async () => {
@@ -29,7 +31,8 @@ const CardMenu: React.FC<any> = ({ form_id, onDelete }: any) => {
   );
 };
 
-const FormsList: React.FC = () => {
+const FormsList: React.FC = observer(() => {
+  const store = useContext(AppStoreContext)
   const [state, setState] = useState<{
     isLoading: boolean;
     forms: TFormEditor[];
@@ -40,7 +43,7 @@ const FormsList: React.FC = () => {
   useEffect(() => {
     let r = async () => {
       setState({ ...state, isLoading: true });
-      let forms = await getForms();
+      let forms = await getForms(store.token!);
       forms = forms.sort((a, b) => {
         // @ts-ignore
         return new Date(b.updatedAt!) - new Date(a.updatedAt!);
@@ -53,7 +56,7 @@ const FormsList: React.FC = () => {
       setState({ ...state, isLoading: false });
       httpErrorHandler(error);
     }
-  }, []);
+  }, [store.isAuth]);
 
   const deleteForm = (id: string) => {
     setState({
@@ -132,6 +135,6 @@ const FormsList: React.FC = () => {
       )}
     </>
   );
-};
+});
 
 export default FormsList;

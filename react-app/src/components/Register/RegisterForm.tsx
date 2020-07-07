@@ -15,7 +15,7 @@ const RegisterForm: React.FC = observer(() => {
   const onSubmit = async ({ username, password, email }: any) => {
     try {
       let r = await register(username, password, email);
-      store.setAuth(r.token)
+      await store.setAuth(r.token)
       history.push('/');
     } catch (error) {
       httpErrorHandler(error);

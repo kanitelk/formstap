@@ -1,4 +1,4 @@
-import { action, observable, toJS } from "mobx";
+import { action, observable, toJS, computed } from "mobx";
 import { createContext } from "react";
 
 import { Answer, TFormEditor, Responce } from "../components/Form/types";
@@ -10,6 +10,7 @@ class ResponcesStore {
   @observable responces: Responce[] | null = null;
   @observable id: string | null = null;
   @observable form: TFormEditor | null = null;
+  @observable showBlank: boolean = true;
 
   @action async getAnswers(id: string) {
     try {
@@ -27,6 +28,19 @@ class ResponcesStore {
 
   @action async updateCurrentAnswers() {
     this.getAnswers(this.id!);
+  }
+
+  @computed get dataWithoutBlanks(): Responce[] | undefined {
+      return this.responces?.filter(item => {
+        let existNotEmpty = false;
+        for (let i = 0; i< item.answers.length; i++) {
+          if (item.answers[i].answer !== '') {
+            existNotEmpty = true
+          }
+        }
+        if (existNotEmpty) return true;
+        return false
+      })
   }
 
   @action clear() {

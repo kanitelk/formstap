@@ -19,7 +19,9 @@ const DateField: React.FC = observer(() => {
         autoFocus={store.formView}
         onChange={(date, dateString) => setState(dateString)}
       />
-      <Button onClick={setAnswer}>Next</Button>
+      <Button disabled={state.length === 0} onClick={setAnswer}>
+        Next
+      </Button>
     </div>
   );
 });

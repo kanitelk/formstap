@@ -23,7 +23,9 @@ const PhoneField: React.FC = observer(() => {
         placeholder="+7-910-222-11-99"
         onPressEnter={setAnswer}
       />
-      <Button onClick={setAnswer}>Next</Button>
+      <Button disabled={state.length === 0} onClick={setAnswer}>
+        Next
+      </Button>
     </div>
   );
 });

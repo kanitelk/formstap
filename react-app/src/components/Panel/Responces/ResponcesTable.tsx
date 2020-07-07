@@ -25,7 +25,7 @@ const ResponcesTable: React.FC = observer(() => {
         size="small"
         bordered
         rowKey={(e) => e._id}
-        dataSource={store.responces!}
+        dataSource={store.showBlank ? store.responces! : store.dataWithoutBlanks!}
         rowClassName="row"
         tableLayout="auto"
       >

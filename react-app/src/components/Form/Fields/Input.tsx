@@ -18,7 +18,7 @@ const InputField: React.FC = observer(() => {
         autoFocus={store.formView}
         onChange={(e) => setState(e.target.value)}
       />
-      <Button onClick={setAnswer}>Next</Button>
+      <Button disabled={state.length === 0} onClick={setAnswer}>Next</Button>
     </div>
   );
 });

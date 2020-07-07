@@ -15,10 +15,10 @@ const TextareaField: React.FC = observer(() => {
   return (
     <div className="textarea-field">
       <div className="title">{form?.fields[current_step].title}</div>
-      <TextArea
-        onChange={(e) => setState(e.target.value)}
-      />
-      <Button onClick={setAnswer}>Next</Button>
+      <TextArea onChange={(e) => setState(e.target.value)} />
+      <Button disabled={state.length === 0} onClick={setAnswer}>
+        Next
+      </Button>
     </div>
   );
 });

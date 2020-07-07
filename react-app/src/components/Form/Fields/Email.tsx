@@ -22,7 +22,9 @@ const EmailField: React.FC = observer(() => {
         onChange={(e) => setState(e.target.value)}
         placeholder="hello@mail.com"
       />
-      <Button onClick={setAnswer}>Next</Button>
+      <Button disabled={state.length === 0} onClick={setAnswer}>
+        Next
+      </Button>
     </div>
   );
 });

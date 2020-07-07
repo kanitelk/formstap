@@ -1,7 +1,13 @@
 import config from "../config";
 import HTTP from "./http";
 import { AxiosRequestConfig } from "axios";
-import { TForm, TFormEditor, TField, Answer, Responce } from "../components/Form/types";
+import {
+  TForm,
+  TFormEditor,
+  TField,
+  Answer,
+  Responce,
+} from "../components/Form/types";
 
 export type Form = {
   _id: string;
@@ -20,8 +26,12 @@ export const getFormForEditor = async (id: string): Promise<TFormEditor> => {
   return res.data;
 };
 
-export const getForms = async (): Promise<Array<TFormEditor>> => {
-  let res = await HTTP.get(`${config.apiURL}/forms`, axiosConfig);
+export const getForms = async (token: string): Promise<Array<TFormEditor>> => {
+  let res = await HTTP.get(`${config.apiURL}/forms`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.data;
 };
 
@@ -89,7 +99,7 @@ export const updateField = async (field_id: string, field: TField) => {
     axiosConfig
   );
   return res.data;
-}
+};
 
 export const deleteField = async (field_id: string) => {
   let res = await HTTP.delete(
@@ -98,4 +108,3 @@ export const deleteField = async (field_id: string) => {
   );
   return res.data;
 };
-
