@@ -41,7 +41,7 @@ class FormStore {
       answer: value,
     };
     this.answers.push(answer);
-    if (this.current_step === this.form?.fields!.length - 1) {
+    if (this.current_step === this.form!.fields!.length - 1) {
       this.submit();
     } else {
       this.current_step++;

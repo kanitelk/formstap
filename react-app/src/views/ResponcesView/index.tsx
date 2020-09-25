@@ -10,7 +10,7 @@ import { Switch } from 'antd';
 
 const ResponcesView: React.FC = observer(() => {
   const store = useContext(ResponcesStoreContext);
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   useEffect(() => {
     store.getAnswers(id!);
     return () => {

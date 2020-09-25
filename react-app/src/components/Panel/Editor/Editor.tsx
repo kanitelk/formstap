@@ -15,7 +15,7 @@ import RewardSettings from './RewardSettings/RewardSettings';
 
 const Editor: React.FC = observer(() => {
   const editorStore = useContext(EditorStoreContext);
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   useEffect(() => {
     editorStore.getForm(id!);
   }, []);

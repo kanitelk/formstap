@@ -6,7 +6,7 @@ import { FormStoreContext } from "../../stores/formStore";
 import Form from "../../components/Form/Form";
 
 const FormView: React.FC = observer(() => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const formStore = useContext(FormStoreContext);
 
   useEffect(() => {

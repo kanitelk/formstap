@@ -7,6 +7,7 @@ import React, { useContext } from "react";
 import history from "../../stores/history";
 import { AppStoreContext } from "../../stores/appStore";
 import { FormStoreContext } from "../../stores/formStore";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = observer(() => {
   const { Header } = Layout;
@@ -21,7 +22,7 @@ const Header: React.FC = observer(() => {
         }}
         className="logo"
       >
-        <h1>TapForms</h1>
+        <h1>Tap.mn</h1>
         <p>Alpha</p>
       </div>
       <div className="actions">

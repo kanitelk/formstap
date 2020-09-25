@@ -69,7 +69,7 @@ const ResponcesTable: React.FC = observer(() => {
           title="Fingerprint"
           ellipsis
         />
-        {store.form?.fields!.length >= 1 && (
+        {store!.form!.fields?.length >= 1 && (
           <ColumnGroup className="answers" title="Answers">
             {store.form!.fields.map((field) => (
               <Column

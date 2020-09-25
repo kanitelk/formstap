@@ -5,11 +5,11 @@ import Editor from "../../components/Panel/Editor/Editor";
 import Form from "../../components/Form/Form";
 
 const EditView: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   return (
     <div className="edit-view">
       <Editor />
-      <Form id={id!} />
+      <Form id={id} />
     </div>
   );
 };
