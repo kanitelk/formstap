@@ -33,7 +33,7 @@ const App: React.FC = observer(() => {
             <Suspense fallback={<Spin />}>
               <Switch>
                 <Route path="/register" exact component={RegisterView} />
-                <Route path="/login" exact component={LoginView} />
+                <Route path="/login" component={LoginView} />
                 <Route path="/edit/:id" exact component={EditView} />
                 <Route path="/form/:id" exact component={FormView} />
                 <Route path="/responces/:id" exact component={ResponcesView} />
