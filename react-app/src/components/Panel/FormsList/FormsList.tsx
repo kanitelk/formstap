@@ -121,7 +121,7 @@ const FormsList: React.FC = observer(() => {
                   />
                   <Dropdown
                     overlay={
-                      <CardMenu onDelete={deleteForm} form_id={form._id} />
+                      <CardMenu onDelete={() => deleteForm(form._id!)} form_id={form._id} />
                     }
                     placement="bottomLeft"
                   >
@@ -131,6 +131,7 @@ const FormsList: React.FC = observer(() => {
               </div>
             </Card>
           ))}
+          {state.forms.length === 0 && <h3>You haven't created forms yet</h3>}
         </div>
       )}
     </>
