@@ -1,7 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 
-import { decodeToken, getToken, isAuthMiddleware } from "../actions/Auth";
+import { decodeToken, getToken, isAuthMiddleware, tgAuth } from "../actions/Auth";
 import { createUser, editUser, loginUser } from "../actions/User";
 
 const router = express.Router();
@@ -31,6 +31,16 @@ router.post("/login", async (req, res) => {
   const { login, password } = req.body;
   try {
     res.send(await loginUser(login, password));
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// Telegram Auth
+router.post("/telegram-auth", async (req, res) => {
+  const { data } = req.body;
+  try {
+    res.send(await tgAuth(data));
   } catch (error) {
     res.status(400).send(error);
   }

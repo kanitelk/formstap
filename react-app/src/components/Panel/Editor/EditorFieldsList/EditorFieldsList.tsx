@@ -29,41 +29,41 @@ const getFieldHeader = (field: TField) => {
     case FieldTypeEnum.input:
       return (
         <>
-          <EnterOutlined /> {field.title ? field.title : ""}
+          <EnterOutlined /> {field.title || "Input"}
         </>
       );
     case FieldTypeEnum.textarea:
       return (
         <>
-          <AlignLeftOutlined /> {field.title ? field.title : ""}
+          <AlignLeftOutlined /> {field.title || "Textarea"}
         </>
       );
     case FieldTypeEnum.date:
       return (
         <>
-          <CalendarOutlined /> {field.title ? field.title : ""}
+          <CalendarOutlined /> {field.title || "Date"}
         </>
       );
     case FieldTypeEnum.phone:
       return (
         <>
-          <PhoneOutlined /> {field.title ? field.title : ""}
+          <PhoneOutlined /> {field.title || "Phone"}
         </>
       );
     case FieldTypeEnum.email:
       return (
         <>
-          <MailOutlined /> {field.title ? field.title : ""}
+          <MailOutlined /> {field.title || "Email"}
         </>
       );
     case FieldTypeEnum.number:
       return (
         <>
-          <FieldBinaryOutlined /> {field.title ? field.title : ""}
+          <FieldBinaryOutlined /> {field.title || "Number"}
         </>
       );
     default:
-      return <>Field {field.title ? field.title : ""}</>;
+      return <>Field {field.title || ""}</>;
   }
 };
 

@@ -9,61 +9,66 @@ import { AppStoreContext } from "../../stores/appStore";
 import { login } from "../../services/authAPI";
 import history from "../../stores/history";
 import { httpErrorHandler } from "../../services/utils";
+import { TelegramAuthWidget } from "./TelegramAuthWidget";
 
 const LoginForm: React.FC = observer(() => {
-  const store = useContext(AppStoreContext)
-  const onSubmit = async ({username, password}: any) => {
+  const store = useContext(AppStoreContext);
+  const onSubmit = async ({ username, password }: any) => {
     try {
       let r = await login(username, password);
-      await store.setAuth(r.token)
-      history.push('/')
+      await store.setAuth(r.token);
+      history.push("/");
     } catch (error) {
-      httpErrorHandler(error)
+      httpErrorHandler(error);
     }
   };
-  return (
-    <Card title="Login" className="login-form__card">
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={onSubmit}
-      >
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "Please input your Username!" }]}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-            autoFocus
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
 
-        <Form.Item>
-          <div className="actions">
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-            <NavLink to="/register">Register</NavLink>
-          </div>
-        </Form.Item>
-      </Form>
-    </Card>
+  return (
+    <>
+      <Card title="Login" className="login-form__card">
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={onSubmit}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+              autoFocus
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <div className="actions">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
+                Log in
+              </Button>
+              <NavLink to="/register">Register</NavLink>
+            </div>
+          </Form.Item>
+        </Form>
+      </Card>
+      <TelegramAuthWidget />
+    </>
   );
 });
 

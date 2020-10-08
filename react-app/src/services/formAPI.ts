@@ -14,7 +14,11 @@ export type Form = {
 
 const axiosConfig: AxiosRequestConfig = {
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: {
+      toString() {
+        return `Bearer ${localStorage.getItem("token")}`;
+      },
+    },
   },
 };
 

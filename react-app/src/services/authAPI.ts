@@ -14,13 +14,17 @@ export const register = async (
   return res.data;
 };
 
-export const login = async (
-  login: string,
-  password: string,
-) => {
+export const login = async (login: string, password: string) => {
   let res = await HTTP.post(`${config.apiURL}/users/login`, {
     login,
-    password
+    password,
+  });
+  return res.data;
+};
+
+export const tgAuth = async (data: any) => {
+  let res = await HTTP.post(`${config.apiURL}/users/telegram-auth`, {
+    data,
   });
   return res.data;
 };
