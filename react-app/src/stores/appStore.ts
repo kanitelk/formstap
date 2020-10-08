@@ -8,6 +8,14 @@ class AppStore {
   @observable isAuth: boolean = false;
   @observable token: string | null = null;
   @observable login: string | null = null;
+  @observable telegram: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    username: string;
+    photo_url: string;
+    auth_date: number;
+  } | null = null;
 
   constructor() {
     const token = localStorage.getItem("token");
@@ -20,12 +28,15 @@ class AppStore {
         this.setAuth(localStorage.getItem("token")!);
       }
     }
+    if (localStorage.getItem("telegram")) {
+      this.telegram = JSON.parse(localStorage.getItem("telegram")!);
+    }
   }
 
   @action async setAuth(token: string) {
     try {
+      localStorage.setItem("token", token);
       const data = jwt.decode(token);
-      await localStorage.setItem("token", token);
       this.isAuth = true;
       this.token = token;
       // @ts-ignore
@@ -36,8 +47,15 @@ class AppStore {
     }
   }
 
+  @action async setTgAuth(data: any) {
+    this.setAuth(data.token);
+    localStorage.setItem("telegram", JSON.stringify(data.data));
+    this.telegram = data.data;
+  }
+
   @action logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("telegram");
     this.isAuth = false;
     this.login = null;
     this.token = null;

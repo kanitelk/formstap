@@ -5,9 +5,12 @@ export type UserDocument = mongoose.Document & {
   email: string;
   password: string;
   telegram: {
-    id: number,
-    name: string,
-  }
+    id: number;
+    first_name: string;
+    last_name: string;
+    username: string;
+    photo_url: string;
+  };
 };
 
 const userSchema = new mongoose.Schema(
@@ -15,15 +18,17 @@ const userSchema = new mongoose.Schema(
     login: {
       type: String,
       index: true,
-      unique: true,
-      required: true,
+      unique: true
     },
     email: String,
     password: String,
     telegram: {
       id: Number,
-      name: String
-    }
+      first_name: String,
+      last_name: String,
+      username: String,
+      photo_url: String
+    },
   },
   {
     timestamps: true,

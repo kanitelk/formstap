@@ -37,6 +37,7 @@ const Header: React.FC = observer(() => {
         {store.isAuth && (
           <div className="authenticated">
             <p>{store.login}</p>
+            {store.telegram?.photo_url && <Avatar src={store.telegram?.photo_url} />}
             <div className="logout">
               <Button
                 onClick={() => {

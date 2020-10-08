@@ -1,10 +1,11 @@
 import express from "express";
 import * as jwt from "jsonwebtoken";
-import { createHash, createHmac } from 'crypto'
+import { createHash, createHmac } from "crypto";
 
 import config from "../config";
 import { HttpException } from "../utils/errorHandler";
 import { sha256 } from "js-sha256";
+import { User } from "../models/UserSchema";
 
 export type DecodedTokenType = {
   _id?: string;
@@ -68,8 +69,20 @@ export const tgAuth = async (data: TgAuthData) => {
   }
 
   if (checkSignature(data)) {
-    
-    return "ok!";
+    let user = await User.findOne({ "telegram.id": data.id });
+    if (user) {
+      user.telegram = data;
+      await user.save();
+    }
+    if (!user) {
+      user = new User({ telegram: data });
+      await user.save();
+    }
+    const token = generateToken(user._id, data.username);
+    return {
+      token,
+      data,
+    };
   } else {
     throw new HttpException(401, "Data not from Telegram!");
   }

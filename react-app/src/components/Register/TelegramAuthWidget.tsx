@@ -1,6 +1,10 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext } from "react";
 import TelegramLoginButton from "react-telegram-login";
 import { tgAuth } from "../../services/authAPI";
+import { httpErrorHandler } from "../../services/utils";
+import { AppStoreContext } from "../../stores/appStore";
+import history from "../../stores/history";
 
 export type TgAuthData = {
   id: number;
@@ -12,17 +16,22 @@ export type TgAuthData = {
   hash: string;
 };
 
-export const TelegramAuthWidget: React.FC = () => {
+export const TelegramAuthWidget: React.FC = observer(() => {
+  const appStore = useContext(AppStoreContext);
   const handleTelegramResponse = async (data: TgAuthData) => {
-    let res = await tgAuth(data);
-    console.log(res);
+    try {
+      let res = await tgAuth(data);
+      appStore.setTgAuth(res);
+      history.push("/");
+    } catch (error) {
+      httpErrorHandler(error);
+    }
   };
 
   return (
     <TelegramLoginButton
-      style={{ marginTop: "15px" }}
       dataOnauth={handleTelegramResponse}
       botName="tapmn_auth_bot"
     />
   );
-};
+});

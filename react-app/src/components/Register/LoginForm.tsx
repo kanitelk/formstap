@@ -67,7 +67,9 @@ const LoginForm: React.FC = observer(() => {
           </Form.Item>
         </Form>
       </Card>
-      <TelegramAuthWidget />
+      <div className="tg-auth">
+        <TelegramAuthWidget />
+      </div>
     </>
   );
 });
