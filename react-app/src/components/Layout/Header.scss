@@ -11,15 +11,16 @@
     cursor: pointer;
 
     h1 {
-      font-size: 1rem;
+      font-size: 1.3rem;
+      font-weight: 600;
     }
 
     p {
-      font-size: 0.6rem;
-      font-weight: 500;
-      color: #1890ff;
-      margin-bottom: 5px;
-      line-height: 60px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1375d1;
+      margin-bottom: 7px;
+      line-height: 50px;
       margin-left: 2px;
     }
   }
@@ -37,6 +38,33 @@
     .ant-avatar {
       margin-top: 16px;
       margin-left: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    justify-content: center;
+  }
+
+  .is-auth {
+    justify-content: space-between;
+  }
+
+
+  .ant-layout-header {
+    padding-left: 20px;
+    padding-right: 15px;
+
+    .actions {
+      position: absolute;
+      right: 20px;
+      // margin-left: auto;
+      justify-self: flex-end;
+
+      .register-btn {
+        display: none;
+      }
     }
   }
 }

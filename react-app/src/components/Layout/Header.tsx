@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 const Header: React.FC = observer(() => {
   const { Header } = Layout;
   const store = useContext(AppStoreContext);
-
+  const headerClass = `header ${store.isAuth && "is-auth"}`;
   return (
-    <Header className="header">
+    <Header className={headerClass}>
       {/* <Button onClick={() => alert(getFingerprint())}>FP</Button> */}
       <div
         onClick={() => {
@@ -28,16 +28,27 @@ const Header: React.FC = observer(() => {
       <div className="actions">
         {!store.isAuth && (
           <div className="login">
-            <Button onClick={() => history.push("/login")} type="primary">
+            <Button
+              className="login-btn"
+              onClick={() => history.push("/login")}
+              type="primary"
+            >
               Login
             </Button>
-            <Button onClick={() => history.push("/register")}>Register</Button>
+            <Button
+              className="register-btn"
+              onClick={() => history.push("/register")}
+            >
+              Register
+            </Button>
           </div>
         )}
         {store.isAuth && (
           <div className="authenticated">
             <p>{store.login}</p>
-            {store.telegram?.photo_url && <Avatar src={store.telegram?.photo_url} />}
+            {store.telegram?.photo_url && (
+              <Avatar src={store.telegram?.photo_url} />
+            )}
             <div className="logout">
               <Button
                 onClick={() => {

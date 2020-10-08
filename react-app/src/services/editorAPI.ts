@@ -87,7 +87,7 @@ export const updateFormSettings = async (
   };
   let res = await HTTP.post(
     `${config.apiURL}/forms/settings`,
-    data,
+    {data},
     axiosConfig
   );
   return res.data;

@@ -3,9 +3,44 @@
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
-  height: 80%;
+  height: 100vh;
+  margin: -20px;
+
+  background: url("../../assets/bg1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  h2 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .form-icon {
+    margin-top: 2rem;
+    width: 20vw;
+    max-width: 200px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .home-view {
+    h1 {
+      font-size: 2rem
+    }
+    h2 {
+      font-size: 1.7rem;
+    }
   }
 }
