@@ -64,11 +64,11 @@ const ResponcesTable: React.FC = observer(() => {
             if (val === true) return <Tag color="red">Black IP</Tag>;
           }}
         /> */}
-        <Column
+        {/* <Column
           dataIndex={["user_data", "fingerprint"]}
           title="Fingerprint"
           ellipsis
-        />
+        /> */}
         {store!.form!.fields?.length >= 1 && (
           <ColumnGroup className="answers" title="Answers">
             {store.form!.fields.map((field) => (

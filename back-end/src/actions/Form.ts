@@ -75,13 +75,34 @@ export const payToWallet = async (
 export const postAnswers = async (
   form_id: string,
   answers: any[],
-  user_data: any
+  user_data: { figerprint?: string }
 ) => {
   const form = await Form.findById(form_id);
   if (!form) throw new HttpException(404, "Form not found");
-  let push = await axios.post(`https://api.tap.mn/api/new`);
+
+  if (form.settings.check_fingerprint) {
+    const fp = user_data.figerprint;
+    if (user_data.figerprint) {
+      const answers = await Answer.findOne(
+        { form_id },
+        user_data.figerprint === fp
+      );
+      if (answers) {
+        return {
+          reward: false,
+          message: "looks like you filled out the form before",
+        };
+      }
+    } else {
+      return {
+        reward: false,
+        message: "looks like you filled out the form before",
+      };
+    }
+  }
 
   if (form.reward.is_active && form.reward.is_auto) {
+    let push = await axios.post(`https://api.tap.mn/api/new`);
     try {
       let hash = await payToWallet(
         push.data.address,

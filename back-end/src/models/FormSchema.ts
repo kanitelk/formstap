@@ -10,6 +10,9 @@ export type FormSettings = {
   meta: any;
   notifications: String;
   reward: RewardSettings;
+  check_fingerprint: boolean;
+  check_ip: boolean;
+  check_telegram: boolean;
 };
 
 export type RewardSettings = {
@@ -46,7 +49,10 @@ const formSchema = new mongoose.Schema(
         type: Boolean,
         default: true,
       },
-      notifications: String
+      notifications: String,
+      check_fingerprint: Boolean,
+      check_ip: Boolean,
+      check_telegram: Boolean
     },
     reward: {
       address: String,

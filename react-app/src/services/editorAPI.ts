@@ -71,11 +71,23 @@ export const updateFormSettings = async (
   form_id: string,
   title: string,
   is_active: boolean,
-  notifications: string
+  notifications: string,
+  check_fingerprint: boolean,
+  check_ip: boolean,
+  check_telegram: boolean
 ) => {
+  let data = {
+    form_id,
+    is_active,
+    notifications,
+    title,
+    check_fingerprint,
+    check_ip,
+    check_telegram
+  };
   let res = await HTTP.post(
     `${config.apiURL}/forms/settings`,
-    { is_active, notifications, title, form_id },
+    data,
     axiosConfig
   );
   return res.data;

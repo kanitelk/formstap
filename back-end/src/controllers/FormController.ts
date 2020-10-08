@@ -129,13 +129,27 @@ router.post("/field", isAuthMiddleware, async (req, res) => {
 // Update form settings
 router.post("/settings", isAuthMiddleware, async (req, res) => {
   try {
-    const { form_id, title, is_active, notifications } = req.body;
+    const {
+      form_id,
+      title,
+      is_active,
+      notifications,
+      check_fingerprint,
+      check_ip,
+      check_telegram,
+    } = req.body;
     const user: DecodedTokenType = req.user;
     let form = await Form.findById(form_id);
     if (!form.user_id.equals(user._id))
       throw new HttpException(400, "You are not owner of form");
-    form.settings.is_active = is_active;
-    form.settings.notifications = notifications;
+    form.settings = {
+      ...form.settings,
+      is_active,
+      notifications,
+      check_fingerprint,
+      check_ip,
+      check_telegram,
+    };
     form.title = title;
     await form.save();
     res.send({ status: "ok" });

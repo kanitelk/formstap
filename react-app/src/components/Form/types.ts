@@ -1,6 +1,9 @@
 export type FormSettings = {
   is_active: boolean;
   is_public: boolean;
+  check_fingerprint: boolean;
+  check_ip: boolean;
+  check_telegram: boolean;
   language: string;
   show_progress_bar: boolean;
   show_copyright: boolean;
